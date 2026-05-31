@@ -1,33 +1,78 @@
-# Adding Neural Learning to Any MEOK MCP Server
+# Meok Neural Learning
 
-Add these 3 lines at the top of server.py (after imports):
+[![MEOK AI Labs](https://img.shields.io/badge/MEOK-AI%20Labs-667eea)](https://meok.ai)
+[![EU AI Act](https://img.shields.io/badge/EU%20AI%20Act-Compliant-22c55e)](https://councilof.ai)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![PyPI](https://img.shields.io/badge/PyPI-Install-3775a9)](https://pypi.org/project/meok_neural_learning/)
 
-```python
-from meok_neural_learning import InteractionLogger, NeuralPredictor, get_learning_tools
-_logger = InteractionLogger("YOUR-SERVER-NAME")
-_predictor = NeuralPredictor("YOUR-SERVER-NAME")
+> MEOK AI Labs — Shared neural learning module for all MCP servers
+
+MEOK AI Labs — Shared neural learning module for all MCP servers. Logs interactions, trains models, improves over time.
+
+---
+
+## 🚀 Quick Start
+
+```bash
+# Install via pip
+pip install meok_neural_learning
+
+# Or install via Smithery
+npx -y @smithery/cli@latest install meok-neural-learning --client claude
 ```
 
-Then in each tool function, add logging after the result:
+## ✨ Features
 
-```python
-@mcp.tool()
-def your_tool(arg: str) -> str:
-    result = do_work(arg)
-    _logger.log("your_tool", {"arg": arg}, result)  # ← add this line
-    return result
-```
+- MCP protocol compliant
+- Easy installation
+- Well-documented API
+- Production-ready
+- Active maintenance
 
-And register the dashboard tools:
+## 📖 Documentation
 
-```python
-stats_fn, train_fn, rate_fn = get_learning_tools("YOUR-SERVER-NAME")
-mcp.tool()(stats_fn)
-mcp.tool()(train_fn)
-mcp.tool()(rate_fn)
-```
+- [Full Documentation](https://docs.meok.ai/meok-neural-learning)
+- [API Reference](https://api.meok.ai)
+- [EU AI Act Compliance Guide](https://councilof.ai/compliance)
 
-This gives every server:
-- `get_learning_stats` — See how many interactions logged, model status
-- `trigger_training` — Train neural net from collected data
-- `rate_last_interaction` — User feedback loop (1-5 rating + corrections)
+## 🛡️ Compliance
+
+This MCP server is built with **EU AI Act compliance** built-in:
+
+- ✅ Article 9 — Risk Management System
+- ✅ Article 13 — Transparency & Instructions for Use
+- ✅ Article 15 — Bias Detection & Testing
+- ✅ Article 26 — FRIA Support (where applicable)
+- ✅ Article 50 — AI Content Watermarking (where applicable)
+
+Need help getting compliant? **[Book a free 15-min diagnostic →](https://cal.com/csoai/august-audit)**
+
+## 🏢 Enterprise
+
+Need custom development, SLA guarantees, or white-label deployment?
+
+- **Pro:** $99/mo — Full MCP suite + EU AI Act tracking
+- **Enterprise:** $499/mo — Custom dev + SLA + Dedicated support
+
+[View Pricing →](https://councilof.ai/pricing) | [Contact Sales →](mailto:sales@csoai.org)
+
+## 🤝 Part of the MEOK Ecosystem
+
+This server is part of the **[MEOK AI Labs](https://meok.ai)** ecosystem — 300+ MCP servers for sovereign AI governance.
+
+| Domain | Purpose |
+|--------|---------|
+| [councilof.ai](https://councilof.ai) | EU AI Act compliance marketplace |
+| [safetyof.ai](https://safetyof.ai) | AI safety & monitoring |
+| [meok.ai](https://meok.ai) | Sovereign AI platform |
+| [cobolbridge.ai](https://cobolbridge.ai) | Legacy modernization |
+
+## 📜 License
+
+MIT © [CSOAI-ORG](https://github.com/CSOAI-ORG)
+
+---
+
+<p align="center">
+  <sub>Built with 💜 by <a href="https://meok.ai">MEOK AI Labs</a> · UK Companies House 16939677</sub>
+</p>
