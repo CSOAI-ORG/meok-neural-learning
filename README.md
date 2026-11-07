@@ -1,78 +1,48 @@
-# Meok Neural Learning
+# MEOK interaction patterns
 
-[![MEOK AI Labs](https://img.shields.io/badge/MEOK-AI%20Labs-667eea)](https://meok.ai)
-[![EU AI Act](https://img.shields.io/badge/EU%20AI%20Act-Compliant-22c55e)](https://councilof.ai)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
-[![PyPI](https://img.shields.io/badge/PyPI-Install-3775a9)](https://pypi.org/project/meok_neural_learning/)
+`meok-neural-learning` is a local SQLite interaction logger and an exact-input lookup library. Package and class names remain for compatibility. It does not train neural weights or demonstrate generalisation, autonomous improvement, legal compliance or production readiness.
 
-> MEOK AI Labs — Shared neural learning module for all MCP servers
+## Use
 
-MEOK AI Labs — Shared neural learning module for all MCP servers. Logs interactions, trains models, improves over time.
+```python
+from meok_neural_learning import InteractionLogger, NeuralPredictor
 
----
-
-## 🚀 Quick Start
-
-```bash
-# Install via pip
-pip install meok_neural_learning
-
-# Or install via Smithery
-npx -y @smithery/cli@latest install meok-neural-learning --client claude
+logger = InteractionLogger("example-server")
+logger.log("lookup", {"topic": "example"}, {"answer": "reviewed example"}, user_rating=5)
+predictor = NeuralPredictor("example-server")
+result = predictor.train("lookup", logger.get_training_data("lookup"))
+answer = predictor.predict("lookup", {"topic": "example"})  # None if no exact match
 ```
 
-## ✨ Features
+Data is stored under `MEOK_DATA_DIR` or `~/.meok-ai`. Only log data you are authorised to retain and use. This library does not provide consent, redaction, identity verification, access control or a retention policy.
 
-- MCP protocol compliant
-- Easy installation
-- Well-documented API
-- Production-ready
-- Active maintenance
+## Feedback and matching
 
-## 📖 Documentation
+- By default, only explicitly rated examples (3–5) without outstanding corrections are eligible. Unrated data is not an endorsement. A free-text correction excludes the old answer until the caller resolves it separately.
+- At least 50 eligible examples for the requested tool are needed; each retained input appears at least three times. These are implementation thresholds, not statistical evidence of quality.
+- The highest-rated answer is selected. Conflicting answers tied at the highest rating produce no pattern; row order cannot adjudicate disagreements.
+- Prediction requires identical JSON input, including every key and value type. A missing or extra key returns `None`. An empty input pattern matches only an empty input.
+- `support_count` records frequency, not confidence or a probability.
+- An unsuccessful build preserves existing patterns. A successful `train` call still writes and activates local patterns immediately. Keep it behind your application's explicit review and authorisation boundary.
 
-- [Full Documentation](https://docs.meok.ai/meok-neural-learning)
-- [API Reference](https://api.meok.ai)
-- [EU AI Act Compliance Guide](https://councilof.ai/compliance)
+Ratings are caller-supplied feedback, not proof of a human reviewer's identity or mandate. This package alone does not implement Council OS review, reproduction, signing or GSPC admission. Do not attach a GSPC verdict to these patterns or present training-set reuse as held-out performance.
 
-## 🛡️ Compliance
+## Compatibility
 
-This MCP server is built with **EU AI Act compliance** built-in:
+Legacy patterns remain readable but now require exact matching. Former subset matching is intentionally removed. Unrated training examples now yield `insufficient_data`; conflicting top-rated answers are withheld. New patterns expose `support_count` and `best_rating` instead of the former uncalibrated `confidence` field.
 
-- ✅ Article 9 — Risk Management System
-- ✅ Article 13 — Transparency & Instructions for Use
-- ✅ Article 15 — Bias Detection & Testing
-- ✅ Article 26 — FRIA Support (where applicable)
-- ✅ Article 50 — AI Content Watermarking (where applicable)
+Existing files have no admission record. Applications needing reviewed-only runtime use must quarantine them and separately validate their activation policy before loading them. This change does not automatically migrate or approve existing data.
 
-Need help getting compliant? **[Book a free 15-min diagnostic →](https://cal.com/csoai/august-audit)**
+New inputs must be JSON objects with string keys and recursively JSON-compatible values; tuples, arbitrary objects and non-finite numbers are rejected before storage. Use JSON-object outputs: the legacy output encoding does not reliably round-trip lists, scalars or text beginning with `{`. An explicit output-format migration remains separate work.
 
-## 🏢 Enterprise
+## Verification
 
-Need custom development, SLA guarantees, or white-label deployment?
+```bash
+python3 -m unittest discover -s tests -v
+```
 
-- **Pro:** $99/mo — Full MCP suite + EU AI Act tracking
-- **Enterprise:** $499/mo — Custom dev + SLA + Dedicated support
+Tests use temporary databases and make no network or model calls.
 
-[View Pricing →](https://councilof.ai/pricing) | [Contact Sales →](mailto:sales@csoai.org)
+MIT — see [LICENSE](LICENSE).
 
-## 🤝 Part of the MEOK Ecosystem
-
-This server is part of the **[MEOK AI Labs](https://meok.ai)** ecosystem — 300+ MCP servers for sovereign AI governance.
-
-| Domain | Purpose |
-|--------|---------|
-| [councilof.ai](https://councilof.ai) | EU AI Act compliance marketplace |
-| [safetyof.ai](https://safetyof.ai) | AI safety & monitoring |
-| [meok.ai](https://meok.ai) | Sovereign AI platform |
-| [cobolbridge.ai](https://cobolbridge.ai) | Legacy modernization |
-
-## 📜 License
-
-MIT © [CSOAI-ORG](https://github.com/CSOAI-ORG)
-
----
-
-<p align="center">
-  <sub>Built with 💜 by <a href="https://meok.ai">MEOK AI Labs</a> · UK Companies House 16939677</sub>
-</p>
+Measurement, not certification. [Public Council verification](https://councilof.ai/verify).

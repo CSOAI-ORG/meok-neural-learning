@@ -4,12 +4,12 @@ build-backend = "hatchling.build"
 [project]
 name = "meok-neural-learning"
 version = "1.0.0"
-description = "MEOK AI Labs — Shared neural learning for MCP servers. Every tool call makes the next one smarter."
+description = "MEOK local interaction logging and exact-input lookup patterns from rated examples."
 readme = "README.md"
 license = {file = "LICENSE"}
 requires-python = ">=3.10"
 authors = [{name = "MEOK AI Labs", email = "nicholas@meok.ai"}]
-keywords = ["mcp", "neural-network", "learning", "ai", "meok", "self-improving"]
+keywords = ["mcp", "interaction-logging", "feedback", "ai", "meok"]
 dependencies = []
 [project.urls]
 Homepage = "https://meok.ai"
